@@ -48,7 +48,6 @@ usrSchema.methods.generateAuthToken = async function() {
         this.tokens = this.tokens.concat({token: genToken});
         await this.save();
         logger.info(`Token Generated Successfully`)
-        console.log(genToken);
         return genToken;
     } catch (error) {
         console.log(`Error in generating token : ${error}`);
