@@ -9,7 +9,7 @@ module.exports.adminController = {
                 result: req.user
             })
         } catch (error) {
-            res.status(401).json({
+            res.status(422).json({
                 message: `${error}`
             })
         }

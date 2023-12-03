@@ -30,7 +30,7 @@ module.exports.auth_middleware = async (req, res, next) => {
             throw new Error(`Invalid Credential`);
         }
     } catch (error) {
-        res.status(401).json({
+        res.status(422).json({
             message: `${error}`
         })
     }
