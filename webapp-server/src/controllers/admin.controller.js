@@ -4,12 +4,12 @@ const {addUserService, updateUserService, deleteUserService, findOneUserService,
 module.exports.adminController = {
     log_user: async (req, res, next) => {
         try {
-            console.log(req)
             res.status(200).json({
-                message: `log admin`
+                message: `User successfully logged in`,
+                result: req.user
             })
         } catch (error) {
-            res.status(500).json({
+            res.status(401).json({
                 message: `${error}`
             })
         }
@@ -18,12 +18,12 @@ module.exports.adminController = {
         try {
             let data = await addUserService(null, req.body);
 
-            res.status(200).json({
-                message: `add user`,
+            res.status(201).json({
+                message: `User added successfully`,
                 result: data
             })
         } catch (error) {
-            res.status(500).json({
+            res.status(422).json({
                 message: `${error}`
             })
         }
@@ -35,8 +35,8 @@ module.exports.adminController = {
 
             if(userExistence) {
                 let data = await deleteUserService(null, req);
-                res.status(200).json({
-                    message: `del user`,
+                res.status(204).json({
+                    message: `Deleted user successfully`,
                     result: data
                 })
             }
@@ -44,7 +44,7 @@ module.exports.adminController = {
                 throw new Error(`User doesn't exist in the database`);
             }
         } catch (error) {
-            res.status(500).json({
+            res.status(404).json({
                 message: `${error}`
             })
         }
@@ -53,11 +53,11 @@ module.exports.adminController = {
         try {
             const data = await findAllService(null, null);
             res.status(200).json({
-                message: `get all user`,
+                message: `Successfully retrieved all users data`,
                 result: data
             })
         } catch (error) {
-            res.status(500).json({
+            res.status(404).json({
                 message: `${error}`
             })
         }
@@ -70,7 +70,7 @@ module.exports.adminController = {
             if(userExistence){
                 let data = await updateUserService(null, req)
                 res.status(200).json({
-                    message: `update user`,
+                    message: `Updated the user details successfully`,
                     result: data
                 })
             }
@@ -78,9 +78,23 @@ module.exports.adminController = {
                 throw new Error(`User doesn't exist in the database`);
             }
         } catch (error) {
-            res.status(500).json({
+            res.status(404).json({
                 message: `${error}`
             })
         }
     },
+    logout_user: async (req, res, next) => {
+        try {
+            //delete the cookie from the browser
+            res.cookie('token', "", {expires: new Date(0)})
+            
+            res.status(200).json({
+                message: `User successfully logged out`
+            });
+        } catch (error) {
+            res.status().json({
+                message: `${error}`
+            });
+        }
+    }
 }
