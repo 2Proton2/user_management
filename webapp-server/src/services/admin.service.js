@@ -48,6 +48,6 @@ module.exports.findAllService = async (path, ctxt) => {
         const result = await userSchema.find({});
         return result;
     } catch (error) {
-        throw new Error(``);
+        throw new Error(`Admin Service Error : not able to retrieve users`);
     }
 }
