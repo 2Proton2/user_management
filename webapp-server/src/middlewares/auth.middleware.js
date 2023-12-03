@@ -1,11 +1,18 @@
 const { findOneUserService } = require('../services/admin.service');
+const {findOneClientService} = require('../services/user.service');
 const { comparePassword } = require('../services/auth.service');
 const jwt = require('jsonwebtoken');
 const private_key = process.env.PRIVATE_KEY;
 
 module.exports.auth_middleware = async (req, res, next) => {
     try {
-        let userExistence = await findOneUserService('email', req.body.email);
+        let userExistence;
+        if(req.body.role == 'admin'){
+            userExistence = await findOneUserService('email', req.body.email);
+        }
+        else if(req.body.role == 'user'){
+            userExistence = await findOneClientService('email', req.body.email);
+        }
         if(userExistence){
             let flag = await comparePassword(req.body.password, userExistence.password);
             if(flag){

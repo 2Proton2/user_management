@@ -13,7 +13,7 @@ module.exports.addUserService = async (path, ctxt) => {
 
 module.exports.findOneUserService = async (path, ctxt) => {
     try {
-        const result = await userSchema.findOne({ [path]: ctxt });
+        const result = await userSchema.findOne({ [path]: ctxt , role: 'admin'});
         return result;
     } catch (error) {
         throw new Error(`Admin Service Error : not able to find user`);
