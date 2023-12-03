@@ -8,7 +8,10 @@ export default {
     extend: {},
     colors: {
       transparent: 'transparent',
-      black: '#000',
+      black: '#000000',
+      white: '#FFFFFF',
+      lightblue: '#00b4fc',
+      gray: '#51425f'
     }
   },
   plugins: [],
