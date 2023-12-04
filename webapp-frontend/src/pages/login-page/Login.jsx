@@ -30,9 +30,9 @@ export const Login = () => {
           const token = getCookie('token');
           dispatch(setAuth(token));
           dispatch(setUserType(true));
+          NavigateTo(`/admin/panel?id=${result.data}`);
           Notification(toast, 'success', 'POSITION', 'BOTTOM_RIGHT', "Logged in successfully");
           Notification(toast, 'info', 'POSITION', 'BOTTOM_RIGHT', "Welcome Admin");
-          NavigateTo(`/admin/panel`);
         }
       }
       else if(role==='User'){
@@ -43,7 +43,7 @@ export const Login = () => {
           dispatch(setAuth(token));
           dispatch(setUserType(false));
           Notification(toast, 'success', 'POSITION', 'BOTTOM_RIGHT', "Logged in successfully");
-          NavigateTo('/welcome')
+          NavigateTo(`/welcome?id=${result.data}`)
         }
       }
     } catch (error) {
