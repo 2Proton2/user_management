@@ -1,4 +1,5 @@
-const {addUserService, updateUserService, deleteUserService, findOneUserService, findAllService} = require('../services/admin.service');
+const { findById, findOne } = require('../models/user.model');
+const {addUserService, updateUserService, deleteUserService, findOneUserService, findAllService, findUserDataService} = require('../services/admin.service');
 
 
 module.exports.adminController = {
@@ -6,7 +7,7 @@ module.exports.adminController = {
         try {
             res.status(200).json({
                 message: `User successfully logged in`,
-                result: req.user
+                result: `${req.user._id}`
             })
         } catch (error) {
             res.status(422).json({
@@ -31,7 +32,7 @@ module.exports.adminController = {
     del_user: async (req, res, next) => {
         try {
             //First check id is present or not
-            const userExistence = await findOneUserService('_id', req.params.id)
+            const userExistence = await findUserDataService('_id', req.params.id)
 
             if(userExistence) {
                 let data = await deleteUserService(null, req);
@@ -95,6 +96,26 @@ module.exports.adminController = {
             res.status().json({
                 message: `${error}`
             });
+        }
+    },
+    get_a_user: async (req, res, next) => {
+        try {
+            //First check id is present or not
+            const userExistence = await findUserDataService('_id', req.params.id)
+
+            if(userExistence){
+                res.status(200).json({
+                    message: `Data fetched successfully`,
+                    result: userExistence
+                })
+            }
+            else{
+                throw new Error(`User doesn't exist in the database`);
+            }
+        } catch (error) {
+            res.status(404).json({
+                message: `${error}`
+            })
         }
     }
 }

@@ -26,6 +26,11 @@ Route.delete('/delete-user/:id', session_middleware, adminController.del_user);
 Route.get('/get-all-users', session_middleware, adminController.get_all_user);
 
 /**
+ * get a user detail
+ */
+Route.get('/get-user-detail/:id', session_middleware, adminController.get_a_user);
+
+/**
  * updating a user details
  */
 Route.put('/update-user/:id', session_middleware, adminController.update_user);

@@ -40,4 +40,42 @@ userService.logout = async function(){
     }
 }
 
+userService.getOne = async (path, ctxt) => {
+    try{
+        console.log('path => ', path);
+        const response = await axiosInstance.get(`${path}`);
+        return{
+            response: response.status,
+            data: response.data.result
+        }
+    }
+    catch(err){
+        console.error(`Not able to fetch the details : ${err}`);
+    }
+}
+
+userService.getAll = async (path) => {
+    try {
+        const response = await axiosInstance.get(`${path}`);
+        return{
+            response: response.status,
+            data: response.data.result
+        }
+    } catch (err) {
+        console.error(`Not able to fetch the details : ${err}`);
+    }
+}
+
+userService.deleteUser = async (path) => {
+    try {
+        const response = await axiosInstance.delete(`${path}`);
+        return{
+            response: response.status,
+            data: response.data.result
+        }
+    } catch (err) {
+        console.error(`Not able to fetch the details : ${err}`);
+    }
+}
+
 export default userService;
