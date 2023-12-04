@@ -41,7 +41,7 @@ const UserList = () => {
   return (
     <div className="mt-8 flex justify-center">
       <div className="bg-white w-1/2 p-6 flex flex-col items-center">
-        <h2 className="text-2xl font-bold mb-4">User List</h2>
+        <h2 className="text-3xl font-bold mb-4">User List</h2>
         {allUser.map((user) => (
           <div key={user.id} className="w-full bg-lightGray p-4 mb-4 flex justify-between items-center bg-gray-100 rounded-md">
             <div>

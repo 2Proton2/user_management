@@ -5,7 +5,7 @@ import userService from '../../service/user.service';
 import { toast } from 'react-toastify';
 import Notification from '../../components/Notification/Notification';
 
-export const AddUser = () => {
+export const AddUser = ({onAddUser, onClose}) => {
     const navigateTo = useNavigate();
 
     const [userData, setUserData] = useState({
@@ -13,6 +13,7 @@ export const AddUser = () => {
       lastName: '',
       email: '',
       password: '',
+      role: 'user'
     });
   
     const handleInputChange = (e) => {
@@ -25,13 +26,14 @@ export const AddUser = () => {
     const handleAddUser = async (e) => {
       e.preventDefault();
       try {
+        console.log('userData => ', userData);
         let result = await userService.addUser('/admin/add-user', userData)
 
         if(result.response){
             Notification(toast, 'success', 'POSITION', 'BOTTOM_RIGHT', "User Registered Successfully");
         }
-
-        navigateTo('/admin/panel');
+        onAddUser();
+        // navigateTo('/admin/panel');
       } catch (error) {
         Notification(toast, 'error', 'POSITION', 'BOTTOM_RIGHT', 'Bad Request');
         console.error('Error adding user:', error);
@@ -81,6 +83,24 @@ export const AddUser = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          <div className="mb-4">
+                <label
+                  htmlFor="role"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Role
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  value={userData.role}
+                  onChange={handleInputChange}
+                  className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
               Password

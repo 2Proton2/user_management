@@ -7,6 +7,7 @@ import userService from '../../service/user.service'
 import { useDispatch } from 'react-redux';
 import { setAuth, clearAuth } from '../../store/slices/authSlice';
 import { setUserType } from '../../store/slices/userSlice';
+import { AddUserPopup } from './Popup';
 
 export const Panel = () => {
   const dispatch = useDispatch();
@@ -15,11 +16,13 @@ export const Panel = () => {
   const [userDetail, setUserDetail] = useState();
   const url = new URLSearchParams(location.search);
   const userId = url.get('id');
+  const [showAddUserPopup, setShowAddUserPopup] = useState(false);
 
   async function fetchData(id){
     try {
       let result = await userService.getOne(`/admin/get-user-detail/${id}`)
       setUserDetail(result.data);
+      setShowAddUserPopup(false);
     } catch (error) {
       console.error(error)
     }
@@ -31,6 +34,14 @@ export const Panel = () => {
     }
     fetchDetails();
   }, [userId])
+
+  const handleAddUserClick = () => {
+    setShowAddUserPopup(true);
+  };
+
+  const handleAddUserClose = () => {
+    setShowAddUserPopup(false);
+  };
 
   const handleLogout = async (userId) => {
     try {
@@ -48,14 +59,14 @@ export const Panel = () => {
     <div>
       {(userDetail) ? <Header fName={userDetail.firstName} lName={userDetail.lastName} email={userDetail.email} getLoggedOut={handleLogout}/> : null}
       <div className="container mx-auto mt-8">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold">Admin Panel</h1>
-          <Link to="/admin/add-user" className="bg-red text-white px-4 py-2 rounded-md hover:bg-[#ff1744]">
+        <div className="flex justify-between items-center mb-4 ml-7">
+          <button to="/admin/add-user" onClick={handleAddUserClick} className="bg-red text-white font-bold px-4 py-2 rounded-md hover:bg-[#ff1744]">
             Add User
-          </Link>
+          </button>
         </div>
         <UserList />
       </div>
+      {showAddUserPopup && <AddUserPopup onClose={handleAddUserClose} onAddUser={() => fetchData(userId)} />}
     </div>
   );
 };
