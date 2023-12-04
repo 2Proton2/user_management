@@ -1,6 +1,5 @@
 // Navbar.js
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 const Navbar = (props) => {
   console.log(props);
@@ -12,7 +11,7 @@ const Navbar = (props) => {
           <h2 className="text-xl font-bold text-black">{props.fName} {props.lName}</h2>
           <p>{props.email}</p>
         </div>
-        <button className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray">
+        <button className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray" onClick={() => props.getLoggedOut()}>
           Logout
         </button>
       </div>

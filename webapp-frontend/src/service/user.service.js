@@ -29,7 +29,7 @@ userService.addUser = async function(path, obj){
 
 userService.logout = async function(){
     try{
-        const response = await axiosInstance.post(`/${path}/logout`);
+        const response = await axiosInstance.post(`/logout`);
         return{
             response: response.status,
             data: response.data.result

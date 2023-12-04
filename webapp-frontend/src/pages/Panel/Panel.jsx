@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/Header/Header';
 import UserList from '../UserList/UserList';
 import userService from '../../service/user.service'
+import { useDispatch } from 'react-redux';
+import { setAuth, clearAuth } from '../../store/slices/authSlice';
+import { setUserType } from '../../store/slices/userSlice';
 
 export const Panel = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
+  const navigateTo = useNavigate();
   const [userDetail, setUserDetail] = useState();
   const url = new URLSearchParams(location.search);
   const userId = url.get('id');
@@ -26,9 +31,22 @@ export const Panel = () => {
     }
     fetchDetails();
   }, [userId])
+
+  const handleLogout = async (userId) => {
+    try {
+      console.log('lloggoout');
+      await userService.logout();
+      navigateTo(`/`);
+      dispatch(clearAuth());
+      dispatch(setUserType(false));
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <div>
-      {(userDetail) ? <Header fName={userDetail.firstName} lName={userDetail.lastName} email={userDetail.email}/> : null}
+      {(userDetail) ? <Header fName={userDetail.firstName} lName={userDetail.lastName} email={userDetail.email} getLoggedOut={handleLogout}/> : null}
       <div className="container mx-auto mt-8">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Admin Panel</h1>
