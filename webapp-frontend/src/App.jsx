@@ -10,6 +10,7 @@ import {Welcome} from "./pages/Welcome/Welcome";
 import {AddUser} from "./pages/Add-User/Add-User"
 import {ErrorPage} from "./pages/Error/Error";
 import { useSelector } from 'react-redux';
+import { EditUserForm } from './pages/User-Template/User-Template';
 
 function App() {
   const isAdmin = useSelector((state) => {
@@ -25,6 +26,9 @@ function App() {
           <Route path='/welcome' element={<Welcome />} />
           {
             (isAdmin) ? <Route path="/admin/panel/add-user" element={<AddUser />} /> : null
+          }
+          {
+            (isAdmin) ? <Route path="/admin/panel/edit-user" element={<EditUserForm />} /> : null
           }
           {
             (isAdmin) ? <Route path='/admin/panel' element={<Panel />} /> : null
