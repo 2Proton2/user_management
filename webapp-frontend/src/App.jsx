@@ -8,17 +8,28 @@ import {Login} from "./pages/login-page/Login";
 import {Panel} from "./pages/Panel/Panel";
 import {Welcome} from "./pages/Welcome/Welcome";
 import {AddUser} from "./pages/Add-User/Add-User"
+import {ErrorPage} from "./pages/Error/Error";
+import { useSelector } from 'react-redux';
 
 function App() {
+  const isAdmin = useSelector((state) => {
+    return state.user;
+  })
+
   return (
     <>
       <Routes>
         <Route path='/'>
           <Route index={true} element={<Home />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/admin/panel' element={<Panel />} />
           <Route path='/welcome' element={<Welcome />} />
-          <Route path="/admin/panel/add-user" element={<AddUser />} />
+          {
+            (isAdmin) ? <Route path="/admin/panel/add-user" element={<AddUser />} /> : null
+          }
+          {
+            (isAdmin) ? <Route path='/admin/panel' element={<Panel />} /> : null
+          }
+          <Route path='*' element={<ErrorPage />}/>
         </Route>
       </Routes>
     </>
