@@ -7,7 +7,7 @@ userService.login = async function(path, obj){
         const response = await axiosInstance.post(`/${path}/login`, obj);
         return{
             response: response.status,
-            data: response.result
+            data: response.data.result
         }
     }
     catch(err){
@@ -20,7 +20,7 @@ userService.addUser = async function(path, obj){
         const response = await axiosInstance.post(path, obj)
         return {
             response: response.status,
-            data: response.result
+            data: response.data.result
         }
     } catch (error) {
         console.error(`Error in registering the user`)
@@ -32,7 +32,7 @@ userService.logout = async function(){
         const response = await axiosInstance.post(`/${path}/logout`);
         return{
             response: response.status,
-            data: response.result
+            data: response.data.result
         }
     }
     catch(err){
