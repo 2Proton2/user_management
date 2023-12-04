@@ -3,30 +3,45 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import userService from "../../service/user.service";
 import { toast } from 'react-toastify';
 import Notification from '../../components/Notification/Notification';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '../../store/slices/authSlice';
+import { setUserType } from '../../store/slices/userSlice';
 
 export const Login = () => {
   const NavigateTo = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const params =  new URLSearchParams(location.search);
   const role = params.get('role');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
+  function getCookie(cookieName){
+    const token = document.cookie.split('=')[1];
+    return token;
+}
+
+  const fetchUserData = async () => {
     try {
       if(role==='Admin'){
-        let result = await userService.login('admin', { email, password });
+        let result = await userService.login('admin', { email, password, role: 'admin' });
   
         if(result.response === 200){
+          const token = getCookie('token');
+          dispatch(setAuth(token));
+          dispatch(setUserType(true));
           Notification(toast, 'success', 'POSITION', 'BOTTOM_RIGHT', "Logged in successfully");
           Notification(toast, 'info', 'POSITION', 'BOTTOM_RIGHT', "Welcome Admin");
-          NavigateTo(`/panel`);
+          NavigateTo(`/admin/panel`);
         }
       }
       else if(role==='User'){
-        let result = await userService.login('user', { email, password });
+        let result = await userService.login('user', { email, password, role: 'user' });
   
         if(result.response === 200){
+          const token = getCookie('token');
+          dispatch(setAuth(token));
+          dispatch(setUserType(false));
           Notification(toast, 'success', 'POSITION', 'BOTTOM_RIGHT', "Logged in successfully");
           NavigateTo('/welcome')
         }
@@ -58,7 +73,7 @@ export const Login = () => {
         />
       </div>
       <button
-        onClick={handleLogin}
+        onClick={fetchUserData}
         className="bg-black text-white px-4 py-2 rounded-md"
       >
         Login
