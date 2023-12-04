@@ -11,7 +11,9 @@ export default {
       black: '#000000',
       white: '#FFFFFF',
       lightblue: '#00b4fc',
-      gray: '#51425f'
+      gray: '#51425f',
+      red: '#d50000',
+      lightGray: '#e6ddee'
     }
   },
   plugins: [],
